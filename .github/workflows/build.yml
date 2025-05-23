@@ -1,0 +1,27 @@
+name: Compile
+
+on:
+  push:
+    paths:
+      - '*.c'
+      - '*.h'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compile
+        run: $ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android30-clang -DSHELL mali_shrinker_mmap.c -o mali_shrinker_mmap
+
+      - name: Uplaod
+        uses: actions/upload-artifact@v4
+        with:
+          name: mali_shrinker_mmap
+          path: mali_shrinker_mmap
